@@ -1,6 +1,9 @@
 -module(day1).
 -export([solve_part1/0, solve_part2/0]).
 
+% Same solution for both parts, compare the original list witha a copy rotated N steps to the right. In part one N = 1 and in
+% part two N = length of input list / 2. 
+
 solve_part1() -> solve(input(), rotate_list(input(), 1), 0).
 
 solve_part2() -> solve(input(), rotate_list(input(), round(length(input()) / 2)), 0).
