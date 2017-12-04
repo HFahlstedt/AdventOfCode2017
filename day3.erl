@@ -22,54 +22,32 @@ find_offset(_, Max, Base) -> Max - Base.
 solve_part2(Input) -> next_step(e, {1, 0}, maps:from_list([{{0, 0}, 1}, {{1, 0}, 1}]), 1, Input).
 
 next_step(_Dir, _Pos, _Visited, Value, Max) when Value > Max -> Value; 
-next_step(e, {X, Y}, Visited, _, Max) -> 
-    North = {X, Y+1},
-    case maps:is_key(North, Visited) of
+next_step(Direction, Position, Visited, _, Max) -> 
+    Left = left_turn(Direction, Position),
+    case maps:is_key(Left, Visited) of
         false -> 
-            Value = calc_value(North, Visited),
-            next_step(n, North, maps:put(North, Value, Visited), Value, Max);
+            Value = calc_value(Left, Visited),
+            next_step(left_direction(Direction), Left, maps:put(Left, Value, Visited), Value, Max);
         true -> 
-            East = {X+1, Y},
-            Value = calc_value(East, Visited),
-            next_step(e, East, maps:put(East, Value, Visited), Value, Max)
-    end;
-
-next_step(n, {X, Y}, Visited, _, Max) -> 
-    West = {X-1, Y},
-    case maps:is_key(West, Visited) of
-        false -> 
-            Value = calc_value(West, Visited),
-            next_step(w, West, maps:put(West, Value, Visited), Value, Max);
-        true -> 
-            North = {X, Y+1},
-            Value = calc_value(North, Visited),
-            next_step(n, North, maps:put(North, Value, Visited), Value, Max)
-    end;
-
-next_step(w, {X, Y}, Visited, _, Max) -> 
-    South = {X, Y-1},
-    case maps:is_key(South, Visited) of
-        false -> 
-            Value = calc_value(South, Visited),
-            next_step(s, South, maps:put(South, Value, Visited), Value, Max);
-        true -> 
-            West = {X-1, Y},
-            Value = calc_value(West, Visited),
-            next_step(w, West, maps:put(West, Value, Visited), Value, Max)
-    end;
-
-next_step(s, {X, Y}, Visited, _, Max) -> 
-    East = {X+1, Y},
-    case maps:is_key(East, Visited) of
-        false -> 
-            Value = calc_value(East, Visited),
-            next_step(e, East, maps:put(East, Value, Visited), Value, Max);
-        true -> 
-            South = {X, Y-1},
-            Value = calc_value(South, Visited),
-            next_step(s, South, maps:put(South, Value, Visited), Value, Max)
+            Straight = straight_ahead(Direction, Position),
+            Value = calc_value(Straight, Visited),
+            next_step(Direction, Straight, maps:put(Straight, Value, Visited), Value, Max)
     end.
 
+left_turn(e, {X, Y}) -> {X, Y+1};
+left_turn(n, {X, Y}) -> {X-1, Y};
+left_turn(w, {X, Y}) -> {X, Y-1};
+left_turn(s, {X, Y}) -> {X+1, Y}.
+
+left_direction(e) -> n;
+left_direction(n) -> w;
+left_direction(w) -> s;
+left_direction(s) -> e.
+
+straight_ahead(e, {X, Y}) -> {X+1, Y};
+straight_ahead(n, {X, Y}) -> {X, Y+1};
+straight_ahead(w, {X, Y}) -> {X-1, Y};
+straight_ahead(s, {X, Y}) -> {X, Y-1}.
 
 calc_value({X, Y}, Visited) -> 
     maps:get({X-1, Y+1}, Visited, 0) + maps:get({X, Y+1}, Visited, 0) + maps:get({X+1, Y+1}, Visited, 0) +
