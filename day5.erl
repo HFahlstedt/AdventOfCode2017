@@ -1,6 +1,9 @@
 -module(day5).
 -export([solve_part1/0, solve_part2/0]).
 
+% Same solution for both parts, the only difference is how the instructions are modified. 
+% Read instruction, calculate jump, check if jump is outside of memory, if not jump and start over.
+
 solve_part1() -> solve(1, mapped_input(), 0, part1).
 solve_part2() -> solve(1, mapped_input(), 0, part2).
 
