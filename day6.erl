@@ -35,4 +35,4 @@ next_state(Index, MaxIndex, Max, [Val|Rest]) ->
 mod(N, D) when N rem D < 0 -> N rem D + D;
 mod(N, D) -> N rem D.
 
-input() -> [4, 10, 4, 1, 8, 4, 9, 14, 5, 1, 14, 15, 0, 15, 3, 5].
+input() -> lists:map(fun(X) -> list_to_integer(X) end, string:tokens(utils:read_textfile("day6.txt"), "\t")).

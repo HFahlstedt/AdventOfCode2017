@@ -28,5 +28,5 @@ rotate_list_right(L, N) ->  lists:nthtail(length(L) - N, L) ++ lists:sublist(L, 
 dense([]) -> [];
 dense(List) -> {L1, L2} = lists:split(16, List), [lists:foldl(fun(X, Agg) -> X bxor Agg end, 0, L1)|dense(L2)].
 
-input() -> [165,1,255,31,87,52,24,113,0,91,148,254,158,2,73,153].
-input_as_string() -> "165,1,255,31,87,52,24,113,0,91,148,254,158,2,73,153".
+input() -> lists:map(fun(X) -> list_to_integer(X) end, string:tokens(input_as_string(), ",")).
+input_as_string() -> utils:read_textfile("day10.txt").
