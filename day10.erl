@@ -1,15 +1,14 @@
 -module(day10).
--export([solve_part1/0, solve_part2/0]).
+-export([solve_part1/0, solve_part2/0, knot_hash/1]).
 -define(Size, 256).
 
 solve_part1() -> 
     {[First, Second|_], _, _} = solve(lists:seq(0, ?Size - 1), 0, 0, input()),
     First * Second.
 
-solve_part2() -> 
-    Input = input_as_string() ++ [17, 31, 73, 47, 23],
-    Sparse = solve2(63, solve(lists:seq(0, ?Size - 1), 0, 0, Input), Input),
-    lists:flatten(lists:map(fun(X) -> string:to_lower(string:right("0" ++ integer_to_list(X, 16), 2)) end, dense(Sparse))).
+solve_part2() -> lists:flatten(lists:map(fun(X) -> string:to_lower(string:right("0" ++ integer_to_list(X, 16), 2)) end, knot_hash(input_as_string()))).
+
+knot_hash(String) -> dense(solve2(63, solve(lists:seq(0, 255), 0, 0, String ++ [17, 31, 73, 47, 23]), String ++ [17, 31, 73, 47, 23])).
 
 solve(State, Pos, Skip, []) -> {State, Pos, Skip};
 solve(State, Pos, Skip, [Length|Rest]) ->
