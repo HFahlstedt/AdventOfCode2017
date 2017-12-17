@@ -1,7 +1,10 @@
 -module(day15).
--export([solve_part1/2, solve_part2/2]).
+-export([solve_part1/0, solve_part2/0]).
 
-solve_part1(A, B) -> solve(40000000, 0, A, B, 1, 1). % 512, 191
+solve_part1() -> solve_part1(512, 191).
+solve_part1(A, B) -> solve(40000000, 0, A, B, 1, 1).
+
+solve_part2() -> solve_part2(512, 191).
 solve_part2(A, B) -> solve(5000000, 0, A, B, 4, 8). % 512, 191
 
 solve(0, Sum, _, _, _, _) -> Sum;
