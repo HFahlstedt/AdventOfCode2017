@@ -12,17 +12,14 @@ knot_hash(String) -> dense(solve2(63, solve(lists:seq(0, 255), 0, 0, String ++ [
 
 solve(State, Pos, Skip, []) -> {State, Pos, Skip};
 solve(State, Pos, Skip, [Length|Rest]) ->
-    Rotated = rotate_list_left(State, Pos),
-    NewState = rotate_list_right(lists:reverse(lists:sublist(Rotated, 1, Length)) ++ lists:nthtail(Length, Rotated), Pos),
+    Rotated = utils:rotate_list_l(State, Pos),
+    NewState = utils:rotate_list_r(lists:reverse(lists:sublist(Rotated, 1, Length)) ++ lists:nthtail(Length, Rotated), Pos),
     solve(NewState, (Pos + Length + Skip) rem ?Size, Skip+1, Rest).
 
 solve2(0, {LState, _LPos, _LSkip}, _Input) -> LState;
 solve2(Rounds, {LState, LPos, LSkip}, Input) -> 
     New = solve(LState, LPos, LSkip, Input),
     solve2(Rounds-1, New, Input).
-
-rotate_list_left(L, N) -> lists:sublist(L, N+1, length(L)) ++ lists:sublist(L, N).
-rotate_list_right(L, N) ->  lists:nthtail(length(L) - N, L) ++ lists:sublist(L, 1, length(L) - N).
 
 dense([]) -> [];
 dense(List) -> {L1, L2} = lists:split(16, List), [lists:foldl(fun(X, Agg) -> X bxor Agg end, 0, L1)|dense(L2)].
