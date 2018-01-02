@@ -18,5 +18,5 @@ sum_of_divides(E, [_|List], Sum) -> sum_of_divides(E, List, Sum).
 
 input() -> 
     lists:map(
-        fun(X) -> lists:map(fun(Y) -> list_to_integer(Y) end, string:tokens(X, "\t")) end, 
+        fun(X) -> lists:map(fun list_to_integer/1, string:tokens(X, "\t")) end, 
         string:tokens(utils:read_textfile("day2.txt"), "\r\n")).
